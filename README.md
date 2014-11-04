@@ -8,3 +8,6 @@ Author
 License
 --------
 OK for piracy
+
+Instalation
+-----------
