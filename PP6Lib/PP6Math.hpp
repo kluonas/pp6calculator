@@ -15,10 +15,10 @@ int Multiply(float , float , float&);
 
 int Divide(float , float , float&);
 
-float Sqroot(float );
+int Sqroot(float , float& );
 
-int Swap(int& , int&);
+int Swap(float& , float&);
  
-int Sort(int , int* );
+int Sort(int , float* );
 
 #endif

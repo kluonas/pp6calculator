@@ -30,22 +30,26 @@ int Divide(float dividend, float divisor, float& quotient){
   return 0;
 }
 
-float Sqroot(float a){
-  return sqrt(a);
+int Sqroot(float a, float& answer){
+  answer=sqrt(a);
+  return 0;
 }
 
-int Swap(int& i, int& j){
-  int k=i;
+int Swap(float& i, float& j){
+  float k=i;
   i=j;
   j=k;
   return 0;
 }
 
-int Sort(int size, int* array){
-  for(int i=0; i<size; ++i){
+int Sort(int size, float* array){
+  bool swaped;
+  do {
+     swaped=false;
      for(int j=0; j<size-1; ++j){
-        if (array[j]<array[j+1])Swap(array[j],array[j+1]);
+        if (array[j]<array[j+1]){ Swap(array[j],array[j+1]);
+                                  swaped=true;}
      }
-  }
- return 0;
+    if (!swaped) return 0;
+  } while (swaped);
 }
