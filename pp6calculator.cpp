@@ -235,10 +235,28 @@ do {
 }
 
 int TestFourVectorClass(){
-              std::cout<<"Enter 4 vector components x0, x1, x2, x3 and parameter beta"<<std::endl;
-              FourVector x;
-              float beta;
-              std::cin>>x.x0>>x.x1>>x.x2>>x.x3>>beta;
+FourVector x;
+do{
+              std::cout<<"Test FourVector class. What do you want to do?\n\
+              1 - Initialize vector (default 0 0 0 0)\n\
+              2 - Boost vector along z axis\n\
+              3 - Calculate length\n\
+              q - return to main menu"<<std::endl;
+
+              char function_choice;
+
+              if(!(std::cin>>function_choice)){
+                 std::cin.clear();
+                 std::cin.ignore(INT_MAX, '\n');
+                 std::cout<<"[Error] Error 1: input failed"; return 1;
+                 }
+              std::cin.clear();
+              std::cin.ignore(INT_MAX, '\n');
+
+    switch(function_choice){
+        case '1':{
+                 std::cout<<"Enter 4 vector components x0, x1, x2, x3"<<std::endl;
+                 std::cin>>x.x0>>x.x1>>x.x2>>x.x3;
               if(!std::cin){
                  std::cout<<"[Error] Error 1: input failed\nReturn to main menu"<<std::endl;
                  std::cin.clear();
@@ -246,13 +264,32 @@ int TestFourVectorClass(){
                  return 1;
                  }
                else {
-                 std::cout<<" Boost vector ("<<x.x0<<","<<x.x1<<","<<x.x2<<","<<x.x3<<") along z axis with parameter beta="<<beta<<std::endl;
-                 float length=x.F_BoostZ(beta);                                  // call BoostZ function
-                 std::cout<< "Boosted vector (" <<x.x0<<","<<x.x1<<","<<x.x2<<","<<x.x3<<")  Its length="<<length<<std::endl;
+                 std::cout<<" Vector ("<<x.x0<<","<<x.x1<<","<<x.x2<<","<<x.x3<<")"<<std::endl;
                  std::cout<< "press any key to continue...\n";
                  std::cin.ignore();
                  std::cin.ignore();
                  }
+               break;}
+       case '2': {
+                  std::cout<<"Enter beta parameter"<<std::endl;
+                  float beta;
+                  std::cin>>beta;
+                  if(!std::cin){
+                    std::cout<<"[Error] Error 1: input failed\nReturn to main menu"<<std::endl;
+                    std::cin.clear();
+                    std::cin.ignore(INT_MAX, '\n');
+                    break;
+                    }
+                  else {
+                     float length=x.F_BoostZ(beta);                                  // call BoostZ function
+                     std::cout<< "Boosted vector (" <<x.x0<<","<<x.x1<<","<<x.x2<<","<<x.x3<<")  Its length="<<length<<std::endl;
+                     std::cin.ignore();
+                     std::cin.ignore();
+                       }
+                  break;}
+       case '3': {std::cout<<"Length of a Vector l="<<x.F_Vector4Length()<<std::endl;std::cin.ignore();std::cin.ignore();break;}
+       case 'q': return 0;}
+}while(true);
 return 0;
 }
 

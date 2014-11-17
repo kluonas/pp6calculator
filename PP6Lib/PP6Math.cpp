@@ -54,6 +54,7 @@ int Sort(int size, float* array){
      }
     if (!swaped) return 0;
   } while (swaped);
+return 0;
 }
 
 int Intercept(float k, float b, float& answer){
