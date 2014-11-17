@@ -1,84 +1,99 @@
 #include <iostream>
 #include <cmath>
 #include "PP6Math.hpp"
-#include "PP6Math.hpp"
+#include "PP6Physics.hpp"
 #include <climits>
 #include <istream>
 #include <cstdlib>
+
 int main(){
 
 do {
 
 /////////////////////////////
 //                         //
-// MENU                    //
+// MAIN MENU               //
 //                         //
 /////////////////////////////
 
   std::cout<<std::endl<<"This is a pp6calculator\nWhat do you want to do?\n";
-  std::cout<<"\n\
+  std::cout<<"Choose your day: 1, (2not yet), 3\nq - quit\n";
+                     char day;
+                     std::cin>>day;
+                     switch (day){
+
+  ///////////////////////////
+  //                       //
+  //  DAY MENU             //
+  //                       //
+  ///////////////////////////
+  case '1':{
+           std::cout<<"DAY 1.  What do you want to do?\n\
               1 - Sum\n\
               2 - Subtract\n\
               3 - Multiply\n\
               4 - Divide\n\
               5 - Square root\n\
               6 - Sort an array\n\
-              q - quit"<<std::endl;
+              7 - Line interception at x axis\n\
+              8 - Solve quadratic equation\n\
+              9 - Length of 3 - vector\n\
+             10 - Length of 4 - vector\n\
+             11 - Calculate invariant mass of two particles\n\
+              q - return to main menu"<<std::endl;
 
-  char function_choice;
+           char function_choice;
 
-  if(!(std::cin>>function_choice)){
-    std::cin.clear();
-    std::cin.ignore(INT_MAX, '\n'); 
-    std::cout<<"[Error] Error 1: input failed"; return 1;
-  }
-  std::cin.clear();
-  std::cin.ignore(INT_MAX, '\n');
+           if(!(std::cin>>function_choice)){
+               std::cin.clear();
+               std::cin.ignore(INT_MAX, '\n');
+               std::cout<<"[Error] Error 1: input failed"; return 1;
+           }
+           std::cin.clear();
+           std::cin.ignore(INT_MAX, '\n');
+        //////////////////////////
+        //                      //
+        // DAY 1 PROGRAM FLOW   //
+        //                      //
+        //////////////////////////
+         switch (function_choice){
+                case '1': {std::cout<<"Enter two numbers you want to sum\n"; 
+                           float a,b,answer;                               // reserve space for summands and answer 
+                           std::cin>>a>>b;                                   // read input
+                           if(!std::cin){
+                           std::cout<<"[Error] Error 1: input failed\nReturn to main menu"<<std::endl;
+                           std::cin.clear();
+                           std::cin.ignore(INT_MAX, '\n');
+                           continue;
+                           }
+                           else {
+                           Sum(a,b,answer);                                  // call Sum function
+                           std::cout<< a <<" + "<< b <<" = "<< answer << std::endl; // output answer
+                           std::cout<< "press any key to continue...\n";
+                           std::cin.ignore();
+                           std::cin.ignore();
+                           }
+                           break;
+                           }
 
-///////////////////////////////
-//
-// PROGRAM FLOW
-//
-///////////////////////////////
-
-  switch (function_choice){
-    case '1': {std::cout<<"Enter two numbers you want to sum\n"; 
-               float a,b,answer;                               // reserve space for summands and answer 
-               std::cin>>a>>b;                                   // read input
-               if(!std::cin){
-                 std::cout<<"[Error] Error 1: input failed\nReturn to main menu"<<std::endl;
-                 std::cin.clear();
-                 std::cin.ignore(INT_MAX, '\n');
-                 continue;
-                 }
-               else {
-                 Sum(a,b,answer);                                  // call Sum function
-                 std::cout<< a <<" + "<< b <<" = "<< answer << std::endl; // output answer
-                 std::cout<< "press any key to continue...\n";
-                 std::cin.ignore();
-                 std::cin.ignore();
-                 }
-               break;
-               }
-
-    case '2':  {std::cout<<"Enter two numbers you want to subtract\n";
-               float a,b,answer;                               // reserve space for numbers and answer 
-               std::cin>>a>>b;                                 // read input
-               if(!std::cin){
-                 std::cout<<"[Error] Error 1: input failed\nReturn to main menu"<<std::endl;
-                 std::cin.clear();
-                 std::cin.ignore(INT_MAX, '\n');
-                 continue;
-                 }
-               else {
-                 Subtract(a,b,answer);                                    // call Subtract function
-                 std::cout<< a <<" - "<< b <<" = "<< answer << std::endl; // output answer
-                 std::cout<< "press any key to continue...\n";
-                 std::cin.ignore();
-                 std::cin.ignore();
-                 }
-               break;
-               }
+                case '2':  {std::cout<<"Enter two numbers you want to subtract\n";
+                           float a,b,answer;                               // reserve space for numbers and answer 
+                           std::cin>>a>>b;                                 // read input
+                           if(!std::cin){
+                              std::cout<<"[Error] Error 1: input failed\nReturn to main menu"<<std::endl;
+                              std::cin.clear();
+                              std::cin.ignore(INT_MAX, '\n');
+                              continue;
+                              }
+                           else {
+                              Subtract(a,b,answer);                                    // call Subtract function
+                              std::cout<< a <<" - "<< b <<" = "<< answer << std::endl; // output answer
+                              std::cout<< "press any key to continue...\n";
+                              std::cin.ignore();
+                              std::cin.ignore();
+                              }
+                          break;
+                          }
 
     case '3':  {std::cout<<"Enter two numbers you want to multiply\n";
                float a,b,answer;                               // reserve space for terms and answer 
@@ -154,9 +169,59 @@ do {
                break;
                }
 
-      case 'q': return 0;
-      default: std::cout<<"Wrong input, try again\n";
+      case 'q': continue;
+      default: {std::cout<<"Wrong input, try again"<<std::endl; continue;}
   }
+// Day 2
+    /////////////////////////////
+    // DAY 3 PROGRAM FLOW      //
+    /////////////////////////////
+
+  case '3':{
+              std::cout<<"DAY 3.  What do you want to do?\n\
+              1 - Boost vecto along z axis\n\
+              q - return to main menu"<<std::endl;
+
+              char function_choice;
+
+              if(!(std::cin>>function_choice)){
+                 std::cin.clear();
+                 std::cin.ignore(INT_MAX, '\n');
+                 std::cout<<"[Error] Error 1: input failed"; return 1;
+                 }
+              std::cin.clear();
+              std::cin.ignore(INT_MAX, '\n');
+
+    switch(function_choice){
+      case '1':{std::cout<<"Enter 4 vector components x0, x1, x2, x3 and parameter beta"<<std::endl;
+              float x0,x1,x2,x3,beta;
+              float length;
+              std::cin>>x0>>x1>>x2>>x3>>beta;
+              if(!std::cin){
+                 std::cout<<"[Error] Error 1: input failed\nReturn to main menu"<<std::endl;
+                 std::cin.clear();
+                 std::cin.ignore(INT_MAX, '\n');
+                 return 1;
+                 }
+               else {
+                 std::cout<<" Boost vector ("<<x0<<","<<x1<<","<<x2<<","<<x3<<") along z axis with parameter beta="<<beta<<std::endl;
+                 BoostZ(x0,x1,x2,x3,beta,length);                                  // call BoostZ function
+                 std::cout<< "Boosted vector (" <<x0<<","<<x1<<","<<x2<<","<<x3<<")  Its length="<<length<<std::endl;
+                 std::cout<< "press any key to continue...\n";
+                 std::cin.ignore();
+                 std::cin.ignore();
+                 }
+               break;
+               }
+    case 'q': continue;
+    default : {std::cout<<"Wrong input, try again"<<std::endl; continue;}
+    }}
+  ///////////////
+  // DAY DEFAULT
+  //////////////
+    case 'q': {std::cout<<"Bye..."<<std::endl; return 0;}
+    default: {std::cout<<"Wrong input, try again"<<std::endl; continue;}
+    }}
 } while (true);
 
 
