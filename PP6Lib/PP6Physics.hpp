@@ -9,10 +9,10 @@
 
 int Vector3Length(float, float, float, float&);
 
-int Vector4Length(float, float, float, float, float&);
+//int Vector4Length(float, float, float, float, float&);
 
 int InvariantMass(float, float, float, float,float, float, float, float, float&);
 
-int BoostZ(float&, float&, float&, float&, float, float&);
+//int BoostZ(float&, float&, float&, float&, float, float)
 
 #endif

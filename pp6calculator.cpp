@@ -5,6 +5,10 @@
 #include <climits>
 #include <istream>
 #include <cstdlib>
+#include "ClassFourVector.hpp"
+
+int TestFourVectorClass();
+
 
 int main(){
 
@@ -180,6 +184,7 @@ do {
   case '3':{
               std::cout<<"DAY 3.  What do you want to do?\n\
               1 - Boost vecto along z axis\n\
+              2 - Test FourVector class\n\
               q - return to main menu"<<std::endl;
 
               char function_choice;
@@ -194,9 +199,9 @@ do {
 
     switch(function_choice){
       case '1':{std::cout<<"Enter 4 vector components x0, x1, x2, x3 and parameter beta"<<std::endl;
-              float x0,x1,x2,x3,beta;
-              float length;
-              std::cin>>x0>>x1>>x2>>x3>>beta;
+              FourVector x;
+              float beta;
+              std::cin>>x.x0>>x.x1>>x.x2>>x.x3>>beta;
               if(!std::cin){
                  std::cout<<"[Error] Error 1: input failed\nReturn to main menu"<<std::endl;
                  std::cin.clear();
@@ -204,15 +209,16 @@ do {
                  return 1;
                  }
                else {
-                 std::cout<<" Boost vector ("<<x0<<","<<x1<<","<<x2<<","<<x3<<") along z axis with parameter beta="<<beta<<std::endl;
-                 BoostZ(x0,x1,x2,x3,beta,length);                                  // call BoostZ function
-                 std::cout<< "Boosted vector (" <<x0<<","<<x1<<","<<x2<<","<<x3<<")  Its length="<<length<<std::endl;
+                 std::cout<<" Boost vector ("<<x.x0<<","<<x.x1<<","<<x.x2<<","<<x.x3<<") along z axis with parameter beta="<<beta<<std::endl;
+                 float length=x.F_BoostZ(beta);                                  // call BoostZ function
+                 std::cout<< "Boosted vector (" <<x.x0<<","<<x.x1<<","<<x.x2<<","<<x.x3<<")  Its length="<<length<<std::endl;
                  std::cout<< "press any key to continue...\n";
                  std::cin.ignore();
                  std::cin.ignore();
                  }
                break;
                }
+    case '2': {TestFourVectorClass();break;}
     case 'q': continue;
     default : {std::cout<<"Wrong input, try again"<<std::endl; continue;}
     }}
@@ -227,3 +233,27 @@ do {
 
   return 0;
 }
+
+int TestFourVectorClass(){
+              std::cout<<"Enter 4 vector components x0, x1, x2, x3 and parameter beta"<<std::endl;
+              FourVector x;
+              float beta;
+              std::cin>>x.x0>>x.x1>>x.x2>>x.x3>>beta;
+              if(!std::cin){
+                 std::cout<<"[Error] Error 1: input failed\nReturn to main menu"<<std::endl;
+                 std::cin.clear();
+                 std::cin.ignore(INT_MAX, '\n');
+                 return 1;
+                 }
+               else {
+                 std::cout<<" Boost vector ("<<x.x0<<","<<x.x1<<","<<x.x2<<","<<x.x3<<") along z axis with parameter beta="<<beta<<std::endl;
+                 float length=x.F_BoostZ(beta);                                  // call BoostZ function
+                 std::cout<< "Boosted vector (" <<x.x0<<","<<x.x1<<","<<x.x2<<","<<x.x3<<")  Its length="<<length<<std::endl;
+                 std::cout<< "press any key to continue...\n";
+                 std::cin.ignore();
+                 std::cin.ignore();
+                 }
+return 0;
+}
+
+

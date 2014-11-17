@@ -27,9 +27,4 @@ int Intercept(float, float, float&);
 
 int SolveQuadr(float, float, float, float&);
 
-int Vector3Length(float, float, float, float&);
-
-int Vector4Length(float, float, float, float, float&);
-
-int InvariantMass(float, float, float, float,float, float, float, float, float&);
 #endif
