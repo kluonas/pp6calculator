@@ -20,16 +20,19 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 endif()
 
 # - Tell compiler where to find headers
-include_directories(PP6Lib)
+include_directories(PP6Lib FileReader-1.0.0)
 
 # - Add the PP6 library
 add_subdirectory(PP6Lib)
+
+# - Add the FileReader library
+add_subdirectory(FileReader-1.0.0)
 
 # - Add the pp6calculator program
 add_executable(pp6calculator pp6calculator.cpp)
 
 # - Link pp6calculator to the pp6lib library
-target_link_libraries(pp6calculator pp6lib)
+target_link_libraries(pp6calculator pp6lib FileReader)
 
 # - Install pp6calculator to the bin subdirectory of CMAKE_INSTALL_PREFIX
 install(TARGETS pp6calculator DESTINATION bin)

@@ -7,24 +7,28 @@
 #ifndef PP6CALCULATOR_MATH_H
 #define PP6CALCULATOR_MATH_H
 
-int Sum(float , float , float&);
+float Sum(float , float );
 
-int Subtract(float , float , float&);
+float Subtract(float , float );
 
-int Multiply(float , float , float&);
+float Multiply(float , float );
 
-int Divide(float , float , float&);
+float Divide(float , float );
 
 float Square(float);
 
-int Sqroot(float , float& );
+float Sqroot(float );
+
+float Intercept(float, float);
+
+int SolveQuadratic(float, float, float, float&, float&);
 
 int Swap(float& , float&);
  
 int Sort(int , float* );
 
-int Intercept(float, float, float&);
+int SwapInt(int& , int& );
 
-int SolveQuadr(float, float, float, float&);
+int* SortIndex(int , float* );
 
 #endif

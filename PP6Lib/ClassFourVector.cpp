@@ -8,24 +8,35 @@
 #include "PP6Math.hpp"
 #include <cmath>
 
-FourVector::FourVector(const float x0_, const float x1_, const float x2_, const float x3_)
-  : x0(x0_), x1(x1_), x2(x2_), x3(x3_)
-{}
+FourVector::FourVector(const float t_, const float x_, const float y_, const float z_)
+  : t(t_), x(x_), y(y_), z(z_)
+{length=F_Vector4Length();}
 
 FourVector::FourVector(const FourVector& other)
-  : x0(other.x0), x1(other.x1), x2(other.x2), x3(other.x3)
-{}
+  : t(other.t), x(other.x), y(other.y), z(other.z)
+{length=F_Vector4Length();}
 
 FourVector::~FourVector(){}
 
+int FourVector::SetT(float f){t=f; length=F_Vector4Length(); return 0;}
+int FourVector::SetX(float f){x=f; length=F_Vector4Length(); return 0;}
+int FourVector::SetY(float f){y=f; length=F_Vector4Length(); return 0;}
+int FourVector::SetZ(float f){z=f; length=F_Vector4Length(); return 0;}
+
+float FourVector::GetT(){ return t;} 
+float FourVector::GetX(){ return x;} 
+float FourVector::GetY(){ return y;} 
+float FourVector::GetZ(){ return z;} 
+float FourVector::GetLength(){return length;}
+
 float FourVector::F_Vector4Length() const {
-  return ( x0*x0-x1*x1-x2*x2-x3*x3 );
+  return ( t*t-x*x-y*y-z*z );
 }
 
 float FourVector::F_BoostZ(float beta) {
-  float x0_old=x0, x3_old=x3;
+  float t_old=t;
   float gamma=1/sqrt(1-Square(beta));
-  x0=gamma*(x0_old+beta*x3_old);
-  x3=gamma*(beta*x0_old+x3_old);
+  t=gamma*(t_old+beta*z);
+  z=gamma*(beta*t_old+z);
   return F_Vector4Length();
 }

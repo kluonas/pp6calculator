@@ -1,9 +1,8 @@
 #include "PP6Physics.hpp"
 #include "PP6Math.hpp"
-#include <cmath>
 
 float Vector3Length(float x1, float x2, float x3){
-  return x1*x1+x2*x2+x3*x3;
+  return (x1*x1+x2*x2+x3*x3);
 }
 
 float Vector4Length(float x0, float x1, float x2, float x3){
@@ -18,7 +17,7 @@ float InvariantMass(float p0, float p1, float p2, float p3, float k0, float k1, 
 
 float BoostZ(float& x0, float& x1, float& x2, float& x3, float beta) {
   float x0_old=x0, x3_old=x3;
-  float gamma=1/sqrt(1-Square(beta));
+  float gamma=1/Sqroot(1-Square(beta));
   x0=gamma*(x0_old+beta*x3_old);
   x3=gamma*(beta*x0_old+x3_old);
   return Vector4Length(x0,x1,x2,x3);

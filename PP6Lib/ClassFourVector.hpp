@@ -1,6 +1,6 @@
 //////////////////////////////////////
 //                                  //
-// FourVector class declarations    //
+// FourVector class header          //
 //                                  //
 //////////////////////////////////////
 
@@ -9,20 +9,35 @@
 
 class FourVector{
   public:
+
 // constructors
-  FourVector(){x0=0; x1=0; x2=0; x3=0;}
-  FourVector(const float x0_, const float x1_, const float x2_, const float x3_);
+  FourVector(){t=0; x=0; y=0; z=0; length=F_Vector4Length();};
+  FourVector(const float t_, const float x_, const float y_, const float z_);
   FourVector(const FourVector& other);
   ~FourVector();
+
 // member functions
-  float F_BoostZ(const float beta);
+  float F_BoostZ(const float );
+  int SetT(float );
+  int SetX(float );
+  int SetY(float );
+  int SetZ(float );
+
+  float GetT();
+  float GetX();
+  float GetY();
+  float GetZ();
+  float GetLength();
+
+private:
   float F_Vector4Length() const;
 
 // member data
-  float x0;
-  float x1;
-  float x2;
-  float x3;
+  float t;
+  float x;
+  float y;
+  float z;
+  float length;
 };
 
 #endif
