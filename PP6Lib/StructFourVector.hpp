@@ -3,6 +3,15 @@
 
 struct SFourVector;
 
+enum SFourVectorType{
+UNDEFINED,
+SPACELIKE,
+LIGHTLIKE,
+TIMELIKE
+};
+
+SFourVectorType StructGetFourVectorType(SFourVector*);
+
 SFourVector* createSFourVector();
 
 void destroySFourVector(SFourVector *&SV);

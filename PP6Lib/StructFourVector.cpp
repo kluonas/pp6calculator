@@ -15,6 +15,14 @@ void destroySFourVector(SFourVector *&SV){
           }
 }
 
+SFourVectorType StructGetFourVectorType(SFourVector* SV){
+  if (!SV) return UNDEFINED;
+  float L=StructGetLength(SV);
+  if(L<0) return SPACELIKE;
+  else if (L==0) return LIGHTLIKE;
+  else return TIMELIKE;
+}
+
 void StructSetVector(SFourVector *SV, float t, float x, float y, float z){
   if (SV){SV->t=t;
           SV->x=x;
