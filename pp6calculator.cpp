@@ -710,9 +710,7 @@ int TestFourVectorClass(){
     switch(function_choice){
         case '1':{
                  std::cout<<"Enter 4 vector components (t,x,y,z)"<<std::endl;
-                 float t,x,y,z;
-                 std::cin>>t>>x>>y>>z;
-                 V.SetT(t);V.SetX(x);V.SetY(y);V.SetZ(z);
+                 std::cin>>V;
               if(!std::cin){
                  std::cout<<"[Error] Error 1: input failed\nReturn to Test FourVector menu"<<std::endl;
                  std::cin.clear();
@@ -720,8 +718,8 @@ int TestFourVectorClass(){
                  break;
                  }
                else {
-                 std::cout<<" Vector ("<<V.GetT()<<","<<V.GetX()<<","<<V.GetY()<<","<<V.GetZ()<<")"<<std::endl;
-                 std::cout<< "press any key to continue...\n";
+                 std::cout<<"Vector "<<V<<std::endl;
+                 std::cout<<"press any key to continue...\n";
                  std::cin.ignore();
                  std::cin.ignore();
                  }
@@ -738,7 +736,7 @@ int TestFourVectorClass(){
                     }
                   else {
                      float length=V.F_BoostZ(beta);                                  // call BoostZ function
-                     std::cout<< "Boosted vector (" <<V.GetT()<<","<<V.GetX()<<","<<V.GetY()<<","<<V.GetZ()<<")  Its length="<<length<<std::endl;
+                     std::cout<< "Boosted vector " <<V<<" Its length="<<length<<std::endl;
                      std::cout<< "press any key to continue...\n";
                      std::cin.ignore();
                      std::cin.ignore();
@@ -748,7 +746,9 @@ int TestFourVectorClass(){
                   std::cout<< "press any key to continue...\n";
                   std::cin.ignore();std::cin.ignore();
                   break;}
-       case '4':{std::cout<<" Vector ("<<V.GetT()<<","<<V.GetX()<<","<<V.GetY()<<","<<V.GetZ()<<")"<<std::endl;
+       case '4':{
+                 std::cout<<"Vector "<<V;
+                 std::cout<<std::endl;
                  std::cout<< "press any key to continue...\n";
                  std::cin.ignore();
                  std::cin.ignore();
