@@ -602,7 +602,6 @@ int TestBoostZ(){
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 int TestFourVectorStruct(){
-FourVector V;
 SFourVector *SV;
 SV=createSFourVector();
 StructSetVector(SV, 0, 0, 0, 0);
@@ -612,6 +611,7 @@ StructSetVector(SV, 0, 0, 0, 0);
               2 - Boost vector along z axis\n\
               3 - Calculate length\n\
               4 - Show vector\n\
+              5 - Get vector type\n\
               q - return to day 3 menu"<<std::endl;
 
               char function_choice;
@@ -666,6 +666,17 @@ StructSetVector(SV, 0, 0, 0, 0);
                   std::cin.ignore();std::cin.ignore();
                   break;}
        case '4':{std::cout<<" Vector ("<<StructGetT(SV)<<","<<StructGetX(SV)<<","<<StructGetY(SV)<<","<<StructGetZ(SV)<<")"<<std::endl;
+                 std::cout<< "press any key to continue...\n";
+                 std::cin.ignore();
+                 std::cin.ignore();
+                 break;}
+       case '5':{SFourVectorType t=StructGetFourVectorType(SV);
+                 std::string type;
+                 if (t==UNDEFINED) type="UNDEFINED";
+                 else if(t==SPACELIKE) type="SPACELIKE";
+                 else if (t==LIGHTLIKE) type="LIGHTLIKE";
+                 else type="TIMELIKE";
+                 std::cout<<" Vector type is "<<type<<std::endl;
                  std::cout<< "press any key to continue...\n";
                  std::cin.ignore();
                  std::cin.ignore();
