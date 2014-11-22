@@ -3,7 +3,7 @@
 // FourVector class header          //
 //                                  //
 //////////////////////////////////////
-
+#include <iostream>
 #ifndef CLASSFOURVECTOR_H
 #define CLASSFOURVECTOR_H
 
@@ -23,11 +23,23 @@ class FourVector{
   int SetY(float );
   int SetZ(float );
 
-  float GetT();
-  float GetX();
-  float GetY();
-  float GetZ();
+  float GetT() const;
+  float GetX() const;
+  float GetY() const;
+  float GetZ() const;
   float GetLength();
+
+  FourVector& operator+=(const FourVector& rhs){
+  t+=rhs.t; x+=rhs.x; y+=rhs.y; z+=rhs.z; return *this;
+}
+
+  FourVector& operator-=(const FourVector& rhs){
+  t-=rhs.t; x-=rhs.x; y-=rhs.y; z-=rhs.z; return *this;
+}
+
+  FourVector& operator=(const FourVector& rhs){
+  if (&rhs != this) {t=rhs.t; x=rhs.x; y=rhs.y; z=rhs.z; return *this;}
+}
 
 private:
   float F_Vector4Length() const;
@@ -39,5 +51,8 @@ private:
   float z;
   float length;
 };
+
+std::ostream& operator<<(std::ostream& stream, FourVector& V);
+std::istream& operator>>(std::istream& stream, FourVector& V);
 
 #endif
