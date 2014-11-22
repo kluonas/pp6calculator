@@ -7,6 +7,7 @@
 #include <ctime>
 #include "PP6Math.hpp"
 #include "PP6Physics.hpp"
+#include "StructFourVector.hpp"
 #include "ClassFourVector.hpp"
 #include "FileReader.hpp"
 
@@ -30,6 +31,7 @@ int TestSortIndex();
 int AnalyzeData();
 //Day 3
 int TestBoostZ();
+int TestFourVectorStruct();
 int TestFourVectorClass();
 
 int main(){//open main
@@ -139,7 +141,8 @@ while (true) {//open while
   case '3':{bool dayloop=true; while(dayloop){
               std::cout<<"DAY 3.  What do you want to do?\n\
               1 - Boost vector along z axis\n\
-              2 - Test FourVector class\n\
+              2 - Test FourVector struct\n\
+              3 - Test FourVector class\n\
               q - return to main menu"<<std::endl;
 
               char function_choice;
@@ -159,7 +162,8 @@ while (true) {//open while
         //////////////////////////
          switch (function_choice){
                 case '1': {TestBoostZ(); break;}
-                case '2': {TestFourVectorClass();break;}
+                case '2': {TestFourVectorStruct(); break;}
+                case '3': {TestFourVectorClass();break;}
                 case 'q': {dayloop=false; break;}
                 default : {std::cout<<"Wrong input, try again"<<std::endl; break;}
                 };
@@ -444,9 +448,8 @@ int TestInvariantMass(){
 ///////////////////////////////////////////////////////////////////////////////
 int GenerateEnergy(){
    std::cout<<"...Generating 100 random Energies..."<<std::endl;
-   std::cout<<"...Generating momenta and mass in range [0 , 99]GeV and calculating Energy"<<std::endl;
-   float Energy[100];
-   float px,py,pz,mass;
+   std::cout<<"...Generating momenta and mass in range [0 , 99]GeV and calculating Energy..."<<std::endl;
+   float Energy[100], mass;
 
    time_t timer1;
    time(&timer1);
@@ -455,10 +458,7 @@ int GenerateEnergy(){
    mass=rand()%100;
    std::cout<<"mass="<<mass<<std::endl;
    for(int i=0; i<100; ++i){
-      px=rand()%100;
-      py=rand()%100;
-      pz=rand()%100;
-      Energy[i]=Sqroot( Square(mass) + Vector3Length(px,py,pz) );
+      Energy[i]=Sqroot( Square(mass) + Vector3Length(rand()%100,rand()%100,rand()%100) );
       }
 
    std::cout<<"...Calculating Mean Energy..."<<std::endl;
@@ -598,6 +598,81 @@ int TestBoostZ(){
     std::cin.ignore();
     std::cin.ignore();
     return 0;
+}
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+int TestFourVectorStruct(){
+FourVector V;
+SFourVector *SV;
+SV=createSFourVector();
+StructSetVector(SV, 0, 0, 0, 0);
+    do{
+              std::cout<<"Test FourVector struct. What do you want to do?\n\
+              1 - Initialize vector (default 0 0 0 0)\n\
+              2 - Boost vector along z axis\n\
+              3 - Calculate length\n\
+              4 - Show vector\n\
+              q - return to day 3 menu"<<std::endl;
+
+              char function_choice;
+
+              if(!(std::cin>>function_choice)){
+                 std::cin.clear();
+                 std::cin.ignore(INT_MAX, '\n');
+                 std::cout<<"[Error] Error 1: input failed"; return 1;
+                 }
+              std::cin.clear();
+              std::cin.ignore(INT_MAX, '\n');
+
+    switch(function_choice){
+        case '1':{
+                 std::cout<<"Enter 4 vector components (t,x,y,z)"<<std::endl;
+                 float t,x,y,z;
+                 std::cin>>t>>x>>y>>z;
+                 StructSetVector(SV, t, x, y, z);
+              if(!std::cin){
+                 std::cout<<"[Error] Error 1: input failed\nReturn to Test FourVector menu"<<std::endl;
+                 std::cin.clear();
+                 std::cin.ignore(INT_MAX, '\n');
+                 break;
+                 }
+               else {
+                 std::cout<<" Vector ("<<StructGetT(SV)<<","<<StructGetX(SV)<<","<<StructGetY(SV)<<","<<StructGetZ(SV)<<")"<<std::endl;
+                 std::cout<< "press any key to continue...\n";
+                 std::cin.ignore();
+                 std::cin.ignore();
+                 }
+               break;}
+       case '2': {
+                  std::cout<<"Enter beta parameter"<<std::endl;
+                  float beta;
+                  std::cin>>beta;
+                  if(!std::cin){
+                    std::cout<<"[Error] Error 1: input failed\nReturn to Test FourVector menu"<<std::endl;
+                    std::cin.clear();
+                    std::cin.ignore(INT_MAX, '\n');
+                    break;
+                    }
+                  else {
+                     StructBoostZ(SV,beta);                                  // call BoostZ function
+                     std::cout<< "Boosted vector (" <<StructGetT(SV)<<","<<StructGetX(SV)<<","<<StructGetY(SV)<<","<<StructGetZ(SV)<<")"<<std::endl;
+                     std::cout<< "press any key to continue...\n";
+                     std::cin.ignore();
+                     std::cin.ignore();
+                       }
+                  break;}
+       case '3': {std::cout<<"Length of a Vector l="<<StructGetLength(SV)<<std::endl;
+                  std::cout<< "press any key to continue...\n";
+                  std::cin.ignore();std::cin.ignore();
+                  break;}
+       case '4':{std::cout<<" Vector ("<<StructGetT(SV)<<","<<StructGetX(SV)<<","<<StructGetY(SV)<<","<<StructGetZ(SV)<<")"<<std::endl;
+                 std::cout<< "press any key to continue...\n";
+                 std::cin.ignore();
+                 std::cin.ignore();
+                 break;}
+       case 'q': return 0;}
+}while(true);
+return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
