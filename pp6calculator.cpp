@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cmath>
 #include <climits>
 #include <istream>
@@ -8,10 +7,11 @@
 #include "PP6Math.hpp"
 #include "PP6Physics.hpp"
 #include "StructFourVector.hpp"
-#include "ClassFourVector.hpp"
 #include "FileReader.hpp"
+#include "Particle.hpp"
 
 const float MUON_MASS=0.105;
+
 // Day 1
 int TestSum();
 int TestSubtract();
@@ -33,6 +33,7 @@ int AnalyzeData();
 int TestBoostZ();
 int TestFourVectorStruct();
 int TestFourVectorClass();
+int TestParticle();
 
 int main(){//open main
 
@@ -143,6 +144,7 @@ while (true) {//open while
               1 - Boost vector along z axis\n\
               2 - Test FourVector struct\n\
               3 - Test FourVector class\n\
+              4 - Test Particle class (Homework)\n\
               q - return to main menu"<<std::endl;
 
               char function_choice;
@@ -164,6 +166,7 @@ while (true) {//open while
                 case '1': {TestBoostZ(); break;}
                 case '2': {TestFourVectorStruct(); break;}
                 case '3': {TestFourVectorClass();break;}
+                case '4': {TestParticle(); break;}
                 case 'q': {dayloop=false; break;}
                 default : {std::cout<<"Wrong input, try again"<<std::endl; break;}
                 };
@@ -560,7 +563,7 @@ for(int j=0; j<i; ++j){
 std::cout<<"There are "<<l<<" pairs\nListing top 10 invariant masses"<<std::endl;
   // at this point we have a list of #l invariant masses
   int *masses=SortIndex(l-1,invMass);
-  std::cout<<"___ Invariant mass GeV ___ mu+ ___ mu- ___"<<std::endl;
+  std::cout<<"___ Invariant mass^2 GeV^2 ___ mu+ ___ mu- ___"<<std::endl;
   for(int j=0; j<10; ++j){std::cout<<"    "<< invMass[masses[j]]<< "               " <<eventMuPlus[masses[j]]<<"   "<<eventMuMinus[masses[j]]<<std::endl;}
 
     std::cout<< "press any key to continue...\n";
@@ -757,5 +760,82 @@ int TestFourVectorClass(){
 }while(true);
 return 0;
 }
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+int TestParticle(){
+  std::cout<<"Enter a relative or absolute path to a file, press 'd' for default \"observedparticles.dat\" "<<std::endl;
+  std::string filename;
+  std::cin>>filename;
+  if (filename=="d") { filename="observedparticles.dat";}
+      
+  FileReader f(filename);
 
+// Only process if the file is open/valid
+if (f.isValid()) { 
+  std::cout<<"File OPENED!"<<std::endl;
+  // Initialize variables
+  Particle mu[100];
+  int event[100];
+  int i=0;
+  int pdgcode;
+  // skip first line
+  f.nextLine();
+  // Loop until out of lines
+  std::cout<<"...Geting Muons in run4.dat...Recording their momenta...Calculating energy..."<<std::endl;
+  while (f.nextLine()) {
+    // Fields in each line are treated as whitespace separated
+    // and counted from 1. Fields can be retrieved as one of four main
+    // types
 
+    // retrieve field 1 of current line as an integer
+    if ( f.getFieldAsString(6) == "run4.dat" && ( f.getFieldAsString(2)=="mu+" || f.getFieldAsString(2)=="mu-" ) ){
+       if (f.getFieldAsString(2)=="mu+" ) pdgcode=-13;
+       else pdgcode=+13;
+
+       ThreeVector threeMomentum(f.getFieldAsFloat(3),f.getFieldAsFloat(4),f.getFieldAsFloat(5));
+       Particle muon(pdgcode, MUON_MASS, threeMomentum);
+       mu[i]=muon;
+       event[i]=f.getFieldAsInt(1);
+       i++;
+       }
+    // Check that input is o.k.
+    if (f.inputFailed()) break;
+  }
+// check what we recorded
+std::cout<<"recorded events\n";
+ std::cout<<"___ pdg code ___ event ___ E ___ px ___ py ___ pz ___"<<std::endl;
+  for(int j=0; j<i; ++j){std::cout<<"    "<< mu[j].GetPDGCode() << "               " <<event[j]<<"   "<<mu[j].GetFourMomentum().GetT()<<"   "<<mu[j].GetFourMomentum().GetX()<<"   "<<mu[j].GetFourMomentum().GetY()<<"   "<<mu[j].GetFourMomentum().GetZ()<<std::endl;}
+
+  // at this point we have a list of #i muons with type and momenta
+std::cout<<"...Calculating invariant masses of mu+ mu- pairs..."<<std::endl;
+float invMass[1000];
+int eventMuPlus[1000], eventMuMinus[1000];
+int l=0;
+for(int j=0; j<i; ++j){
+   if (mu[j].GetPDGCode()==13){
+   for(int k=0; k<i; ++k){
+      if (mu[j].GetPDGCode() != mu[k].GetPDGCode() ) {
+                                                      FourVector Sum=(mu[j].GetFourMomentum()+mu[k].GetFourMomentum());
+                                                      invMass[l]=Sum.GetLength();
+                                                      eventMuPlus[l]=event[k];eventMuMinus[l]=event[j];
+                                                      ++l;
+                                                      }
+                         }
+                              }
+                      }
+
+std::cout<<"There are "<<l<<" pairs\nListing top 10 invariant masses"<<std::endl;
+  // at this point we have a list of #l invariant masses
+  int *masses=SortIndex(l-1,invMass);
+  std::cout<<"___ Invariant mass^2 GeV^2 ___ mu+ ___ mu- ___"<<std::endl;
+  for(int j=0; j<10; ++j){std::cout<<"    "<< invMass[masses[j]]<< "               " <<eventMuPlus[masses[j]]<<"   "<<eventMuMinus[masses[j]]<<std::endl;}
+
+    std::cout<< "press any key to continue...\n";
+    std::cin.ignore();
+    std::cin.ignore();
+
+}
+else std::cout<<"File didn't open"<<std::endl;
+
+return 0;
+}
