@@ -3,7 +3,7 @@
 // FourVector class header          //
 //                                  //
 //////////////////////////////////////
-#include <iostream>
+#include "ClassThreeVector.hpp"
 #ifndef CLASSFOURVECTOR_H
 #define CLASSFOURVECTOR_H
 
@@ -11,46 +11,50 @@ class FourVector{
   public:
 
 // constructors
-  FourVector(){t=0; x=0; y=0; z=0; length=F_Vector4Length();};
-  FourVector(const float t_, const float x_, const float y_, const float z_);
+  FourVector(){t=0; threeMomentum.SetX(0); threeMomentum.SetY(0); threeMomentum.SetZ(0); F_Vector4Length();};
+  FourVector(const float t_, const ThreeVector& x_);
   FourVector(const FourVector& other);
   ~FourVector();
 
 // member functions
   float F_BoostZ(const float );
-  int SetT(float );
-  int SetX(float );
-  int SetY(float );
-  int SetZ(float );
+  void SetT(const float );
+  void SetThreeVector(const ThreeVector& );
+  void SetX(const float );
+  void SetY(const float );
+  void SetZ(const float );
 
   float GetT() const;
+  ThreeVector& GetThreeVector();
   float GetX() const;
   float GetY() const;
   float GetZ() const;
-  float GetLength();
+  float GetLength() const;
 
-  FourVector& operator+=(const FourVector& rhs){
-  t+=rhs.t; x+=rhs.x; y+=rhs.y; z+=rhs.z; return *this;
-}
+FourVector& operator+=(const FourVector& rhs){
+  t+=rhs.t; threeMomentum+=rhs.threeMomentum; F_Vector4Length(); return *this;
+  }
 
-  FourVector& operator-=(const FourVector& rhs){
-  t-=rhs.t; x-=rhs.x; y-=rhs.y; z-=rhs.z; return *this;
-}
+FourVector& operator-=(const FourVector& rhs){
+  t-=rhs.t; threeMomentum-=rhs.threeMomentum; F_Vector4Length(); return *this;
+  }
 
-  FourVector& operator=(const FourVector& rhs){
-  if (&rhs != this) {t=rhs.t; x=rhs.x; y=rhs.y; z=rhs.z; return *this;}
-}
+FourVector& operator=(const FourVector& rhs){
+  if (&rhs != this) {t=rhs.t; threeMomentum=rhs.threeMomentum; F_Vector4Length(); return *this;}
+  else return *this;
+  }
 
 private:
-  float F_Vector4Length() const;
+  void F_Vector4Length();
 
 // member data
   float t;
-  float x;
-  float y;
-  float z;
+  ThreeVector threeMomentum;
   float length;
 };
+
+FourVector operator+(const FourVector& , const FourVector& );
+FourVector operator-(const FourVector& , const FourVector& ); 
 
 std::ostream& operator<<(std::ostream& stream, FourVector& V);
 std::istream& operator>>(std::istream& stream, FourVector& V);

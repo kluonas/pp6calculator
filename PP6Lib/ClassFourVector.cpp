@@ -8,39 +8,40 @@
 #include "PP6Math.hpp"
 #include <cmath>
 #include <iostream>
-FourVector::FourVector(const float t_, const float x_, const float y_, const float z_)
-  : t(t_), x(x_), y(y_), z(z_)
-{length=F_Vector4Length();}
+FourVector::FourVector(const float t_, const ThreeVector& x_)
+  : t(t_), threeMomentum(x_)
+{F_Vector4Length();}
 
 FourVector::FourVector(const FourVector& other)
-  : t(other.t), x(other.x), y(other.y), z(other.z)
-{length=F_Vector4Length();}
+  : t(other.t), threeMomentum(other.threeMomentum)
+{F_Vector4Length();}
 
 FourVector::~FourVector(){}
 
-int FourVector::SetT(float f){t=f; length=F_Vector4Length(); return 0;}
-int FourVector::SetX(float f){x=f; length=F_Vector4Length(); return 0;}
-int FourVector::SetY(float f){y=f; length=F_Vector4Length(); return 0;}
-int FourVector::SetZ(float f){z=f; length=F_Vector4Length(); return 0;}
+void FourVector::SetT(const float f){t=f; F_Vector4Length();}
+void FourVector::SetThreeVector(const ThreeVector& other){threeMomentum=other;}
+void FourVector::SetX(const float f){threeMomentum.SetX(f); F_Vector4Length();}
+void FourVector::SetY(const float f){threeMomentum.SetY(f); F_Vector4Length();}
+void FourVector::SetZ(const float f){threeMomentum.SetZ(f); F_Vector4Length();}
 
 float FourVector::GetT() const { return t;} 
-float FourVector::GetX() const { return x;} 
-float FourVector::GetY() const { return y;} 
-float FourVector::GetZ() const { return z;} 
-float FourVector::GetLength(){return length;}
+ThreeVector& FourVector::GetThreeVector() {return threeMomentum;}
+float FourVector::GetX() const { return threeMomentum.GetX();} 
+float FourVector::GetY() const { return threeMomentum.GetY();} 
+float FourVector::GetZ() const { return threeMomentum.GetZ();} 
+float FourVector::GetLength() const {return length;}
 
-float FourVector::F_Vector4Length() const {
-  return ( t*t-x*x-y*y-z*z );
+void FourVector::F_Vector4Length() {
+  length= ( t*t-threeMomentum.GetLength() );
 }
 
 float FourVector::F_BoostZ(float beta) {
   float t_old=t;
   float gamma=1/sqrt(1-Square(beta));
-  t=gamma*(t_old-beta*z);
-  z=gamma*(-beta*t_old+z);
-  return F_Vector4Length();
+  t=gamma*(t_old-beta*threeMomentum.GetZ());
+  threeMomentum.SetZ(gamma*(-beta*t_old+threeMomentum.GetZ()));
+  return length;
 }
-
 
 FourVector operator+(const FourVector& lhs, const FourVector& rhs){
   FourVector temp(lhs);
