@@ -890,7 +890,12 @@ int TestTemplate(){
     }
   else std::cout<<"File not open"<<std::endl;
 // print contents of vectors
-  for (unsigned int i; i<name.size(); ++i) std::cout<<name.at(i)<<"	"<<pdg_code.at(i)<<"	"<<charge.at(i)<<"	"<<mass.at(i)<<std::endl;
+  std::vector<std::string>::iterator iterName=name.begin(), iterNameEnd=name.end();
+  std::vector<int>::iterator iterCode=pdg_code.begin(), iterCharge=charge.begin();
+  std::vector<float>::iterator iterMass=mass.begin();
+
+  for ( ; iterName != iterNameEnd; ++iterName, ++iterCode, ++iterCharge, ++iterMass) std::cout<<*iterName<<"	"<<*iterCode<<"	"<<*iterCharge<<"	"<<*iterMass<<std::endl;
+
   std::cout<< "press any key to continue...\n";
   std::cin.ignore();
 return 0;
