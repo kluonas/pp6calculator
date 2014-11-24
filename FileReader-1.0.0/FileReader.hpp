@@ -23,11 +23,11 @@ class FileReader {
     this->skip_fields(ist, n-1);
     T rval;
     ist >> rval;
-/*    if (ist.fail()) {
+    if (ist.fail()) {
       failed = true;
-      return ;
+      return T ();
     }
-    else*/
+    else
       return rval;
   }
 
