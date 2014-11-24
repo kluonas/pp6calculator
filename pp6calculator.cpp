@@ -9,7 +9,7 @@
 #include "StructFourVector.hpp"
 #include "FileReader.hpp"
 #include "Particle.hpp"
-
+#include <vector>
 const float MUON_MASS=0.105;
 
 // Day 1
@@ -871,29 +871,27 @@ else std::cout<<"File didn't open"<<std::endl;
 return 0;
 }
 //////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-/*
-  void skip_fields(std::istringstream& ist, const int n) {
-  if (n < 1)
-    return;
-  std::string tmp;
-  for(int i = 1; i <= n; ++i) {
-    ist >> tmp;
-  }
-  }*/
-
-  
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////// 
 int TestTemplate(){  
 
   FileReader f("pdg.dat");
+  std::vector<std::string> name;
+  std::vector<int> pdg_code;
+  std::vector<int> charge;
+  std::vector<float> mass;//MeV
   if (f.isValid()){
     std::cout<<"File pdg.dat opened."<<std::endl;
     while(f.nextLine()){
-    std::cout<<f.getField<std::string>(1)<<"	"<<f.getField<float>(2)<<"	"<<f.getField<float>(3)<<"	"<<f.getField<float>(4)<<std::endl;
+      name.push_back(f.getField<std::string>(1));
+      pdg_code.push_back(f.getField<int>(2));
+      charge.push_back(f.getField<int>(3));
+      mass.push_back(f.getField<float>(4));
                        }
     }
   else std::cout<<"File not open"<<std::endl;
-
+// print contents of vectors
+  for (unsigned int i; i<name.size(); ++i) std::cout<<name.at(i)<<"	"<<pdg_code.at(i)<<"	"<<charge.at(i)<<"	"<<mass.at(i)<<std::endl;
+  std::cout<< "press any key to continue...\n";
+  std::cin.ignore();
 return 0;
 }
