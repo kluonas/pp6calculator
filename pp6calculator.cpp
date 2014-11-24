@@ -10,6 +10,7 @@
 #include "FileReader.hpp"
 #include "Particle.hpp"
 #include <vector>
+#include "ParticleInfo.hpp"
 const float MUON_MASS=0.105;
 
 // Day 1
@@ -36,6 +37,7 @@ int TestFourVectorClass();
 int TestParticle();
 //Day 4
 int TestTemplate();
+int TestParticleInfo();
 
 int main(){//open main
 
@@ -178,6 +180,7 @@ while (true) {//open while
 case '4':{bool dayloop=true; while(dayloop){
               std::cout<<"DAY 4.  What do you want to do?\n\
               1 - Test FileReader template\n\
+              2 - Test ParticleInfo class\n\
               q - return to main menu"<<std::endl;
 
               char function_choice;
@@ -197,6 +200,7 @@ case '4':{bool dayloop=true; while(dayloop){
         //////////////////////////
          switch (function_choice){
                 case '1': {TestTemplate(); break;}
+                case '2': {TestParticleInfo(); break;}
                 case 'q': {dayloop=false; break;}
                 default : {std::cout<<"Wrong input, try again"<<std::endl; break;}
                 };
@@ -898,5 +902,21 @@ int TestTemplate(){
 
   std::cout<< "press any key to continue...\n";
   std::cin.ignore();
+return 0;
+}
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+int TestParticleInfo(){
+
+  std::cout<<"...Creating ParticleInfo database..."<<std::endl;
+  ParticleInfo particle("pdg.dat"); 
+  std::cout<<"Let's check some values\n";
+  std::cout<<"name of pdg code 511:  "<<particle.getName(511)<<"\n name of non existing pdg code 666:  "<< particle.getName(666)<<"\n mass of 310:  "<<particle.getMassMeV(310)<<"\npdg code for e+:  "<<particle.getPDGCode("e+")<<std::endl;
+
+  std::cout<< "press any key to continue...\n";
+  std::cin.ignore();
+
+
+
 return 0;
 }
