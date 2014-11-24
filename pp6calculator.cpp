@@ -34,6 +34,8 @@ int TestBoostZ();
 int TestFourVectorStruct();
 int TestFourVectorClass();
 int TestParticle();
+//Day 4
+int TestTemplate();
 
 int main(){//open main
 
@@ -46,7 +48,7 @@ while (true) {//open while
 ///////////////////////////////////////////////////////////////////////////////////
 
   std::cout<<std::endl<<"This is a pp6calculator\nWhat do you want to do?\n";
-  std::cout<<"Choose your day: \n1 - Day 1,\n2 - Day 2, \n3 - Day 3, \nq - quit\n"<<std::endl;
+  std::cout<<"Choose your day: \n1 - Day 1,\n2 - Day 2, \n3 - Day 3, \n4 - Day 4, \nq - quit\n"<<std::endl;
                      char day;
                      std::cin>>day;
                      switch (day){//open day
@@ -171,6 +173,35 @@ while (true) {//open while
                 default : {std::cout<<"Wrong input, try again"<<std::endl; break;}
                 };
          }break;}
+
+// Day 4
+case '4':{bool dayloop=true; while(dayloop){
+              std::cout<<"DAY 4.  What do you want to do?\n\
+              1 - Test FileReader template\n\
+              q - return to main menu"<<std::endl;
+
+              char function_choice;
+
+              if(!(std::cin>>function_choice)){
+                 std::cin.clear();
+                 std::cin.ignore(INT_MAX, '\n');
+                 std::cout<<"[Error] Error 1: input failed"; return 1;
+                 }
+              std::cin.clear();
+              std::cin.ignore(INT_MAX, '\n');
+
+        //////////////////////////
+        //                      //
+        // DAY 4 PROGRAM FLOW   //
+        //                      //
+        //////////////////////////
+         switch (function_choice){
+                case '1': {TestTemplate(); break;}
+                case 'q': {dayloop=false; break;}
+                default : {std::cout<<"Wrong input, try again"<<std::endl; break;}
+                };
+         }break;}
+
 
 // Day default
   case 'q': {std::cout<<"Bye..."<<std::endl; return 0;}
@@ -836,6 +867,33 @@ std::cout<<"There are "<<l<<" pairs\nListing top 10 invariant masses"<<std::endl
 
 }
 else std::cout<<"File didn't open"<<std::endl;
+
+return 0;
+}
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+/*
+  void skip_fields(std::istringstream& ist, const int n) {
+  if (n < 1)
+    return;
+  std::string tmp;
+  for(int i = 1; i <= n; ++i) {
+    ist >> tmp;
+  }
+  }*/
+
+  
+//////////////////////////////////////////////////////////////////////////
+int TestTemplate(){  
+
+  FileReader f("pdg.dat");
+  if (f.isValid()){
+    std::cout<<"File pdg.dat opened."<<std::endl;
+    while(f.nextLine()){
+    std::cout<<f.getField<std::string>(1)<<"	"<<f.getField<float>(2)<<"	"<<f.getField<float>(3)<<"	"<<f.getField<float>(4)<<std::endl;
+                       }
+    }
+  else std::cout<<"File not open"<<std::endl;
 
 return 0;
 }
