@@ -1,6 +1,6 @@
 #include <cmath>
 #include <climits>
-#include <istream>
+#include <iostream>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -11,6 +11,8 @@
 #include "Particle.hpp"
 #include <vector>
 #include "ParticleInfo.hpp"
+#include <algorithm>
+#include <iterator>
 const float MUON_MASS=0.105;
 
 // Day 1
@@ -38,6 +40,7 @@ int TestParticle();
 //Day 4
 int TestTemplate();
 int TestParticleInfo();
+int TestAlgorithm();
 
 int main(){//open main
 
@@ -181,6 +184,7 @@ case '4':{bool dayloop=true; while(dayloop){
               std::cout<<"DAY 4.  What do you want to do?\n\
               1 - Test FileReader template\n\
               2 - Test ParticleInfo class\n\
+              3 - Test Algorithm\n\
               q - return to main menu"<<std::endl;
 
               char function_choice;
@@ -201,6 +205,7 @@ case '4':{bool dayloop=true; while(dayloop){
          switch (function_choice){
                 case '1': {TestTemplate(); break;}
                 case '2': {TestParticleInfo(); break;}
+                case '3': {TestAlgorithm(); break;}
                 case 'q': {dayloop=false; break;}
                 default : {std::cout<<"Wrong input, try again"<<std::endl; break;}
                 };
@@ -908,7 +913,7 @@ return 0;
 /////////////////////////////////////////////////////////////////////////////
 int TestParticleInfo(){
 
-  std::cout<<"...Creating ParticleInfo database..."<<std::endl;
+  std::cout<<"...Creating ParticleInfo database from pdg.dat file..."<<std::endl;
   ParticleInfo particle("pdg.dat"); 
   std::cout<<"Let's check some values\n";
   std::cout<<"name of pdg code 511:  "<<particle.getName(511)<<"\n name of non existing pdg code 666:  "<< particle.getName(666)<<"\n mass of 310:  "<<particle.getMassMeV(310)<<"\npdg code for e+:  "<<particle.getPDGCode("e+")<<std::endl;
@@ -916,7 +921,35 @@ int TestParticleInfo(){
   std::cout<< "press any key to continue...\n";
   std::cin.ignore();
 
+return 0;
+}
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+int RandomNumber () { return (std::rand()%100); }
+//////////////////////////////////////////
+int TestAlgorithm(){
+// create a vector with 10 elements
+std::cout<<"...Creating vector with 10 elements..."<<std::endl;
+std::vector<int> myVector(10);
 
+// fill random values
+std::cout<<"...Filling vector with random numbers..."<<std::endl;
+std::generate (myVector.begin(), myVector.end(), RandomNumber );
+
+// output vector content on the screen
+std::cout<<"...Output vector..."<<std::endl;
+std::copy(myVector.begin(), myVector.end(), std::ostream_iterator<int>(std::cout,"\n"));
+
+// output max and min
+std::cout<<"...Output min and max values..."<<std::endl;
+std::cout<< *std::min_element(myVector.begin(), myVector.end()) <<std::endl;
+std::cout<< *std::max_element(myVector.begin(), myVector.end()) <<std::endl;
+
+// sort and output
+std::cout<<"...Sorting vector..."<<std::endl;
+std::sort(myVector.begin(), myVector.end());
+std::cout<<"...Output vector..."<<std::endl;
+std::copy (myVector.begin(), myVector.end(), std::ostream_iterator<int>(std::cout,"\n"));
 
 return 0;
 }
