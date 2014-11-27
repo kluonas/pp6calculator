@@ -41,6 +41,7 @@ int TestParticle();
 int TestTemplate();
 int TestParticleInfo();
 int TestAlgorithm();
+int TestParticleData();
 
 int main(){//open main
 
@@ -185,6 +186,7 @@ case '4':{bool dayloop=true; while(dayloop){
               1 - Test FileReader template\n\
               2 - Test ParticleInfo class\n\
               3 - Test Algorithm\n\
+              4 - Homework\n\
               q - return to main menu"<<std::endl;
 
               char function_choice;
@@ -206,6 +208,7 @@ case '4':{bool dayloop=true; while(dayloop){
                 case '1': {TestTemplate(); break;}
                 case '2': {TestParticleInfo(); break;}
                 case '3': {TestAlgorithm(); break;}
+                case '4': {TestParticleData(); break;}
                 case 'q': {dayloop=false; break;}
                 default : {std::cout<<"Wrong input, try again"<<std::endl; break;}
                 };
@@ -926,7 +929,7 @@ return 0;
 /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 int RandomNumber () { return (std::rand()%100); }
-//////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 int TestAlgorithm(){
 // create a vector with 10 elements
 std::cout<<"...Creating vector with 10 elements..."<<std::endl;
@@ -950,6 +953,99 @@ std::cout<<"...Sorting vector..."<<std::endl;
 std::sort(myVector.begin(), myVector.end());
 std::cout<<"...Output vector..."<<std::endl;
 std::copy (myVector.begin(), myVector.end(), std::ostream_iterator<int>(std::cout,"\n"));
+
+return 0;
+}
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+bool compareFunction(const std::pair<float, std::pair<int, int> >& one, const std::pair<float, std::pair<int, int> >& two)
+{
+  return one.first > two.first;
+}
+///////////////////////////////////////////////////////////////////////////////
+int TestParticleData(){
+
+// open data file
+  FileReader f("observedparticles.dat");
+// creat particle_info database
+  ParticleInfo particle_info("pdg.dat");
+
+// Only process if the file is open/valid
+if (f.isValid()) 
+{ 
+   std::cout<<"File OPENED!"<<std::endl;
+
+ // A pair of event number and particle
+   std::map<int, Particle> Muon;
+ // Vector of pairs of invariant mass and a pair of mu+ mu- event numbers
+   std::vector<std::pair<float, std::pair<int, int> > > vectorOfMasses;
+ // A pair of event numbers
+   std::pair<int, int> events;
+ // A pair of invariant mass and a pair of mu+ mu- event numbers
+   std::pair<float, std::pair<int, int> > masses;
+
+   std::map<int, Particle>::iterator  iter;
+
+// skip first line
+  f.nextLine();
+
+// Loop until out of lines
+  std::cout<<"...Geting Muons in run4.dat...Recording their momenta...Calculating energy..."<<std::endl;
+  while (f.nextLine()) 
+       {
+         std::string name=f.getField<std::string>(2);
+       // select only run4.dat and only muons
+         if ( f.getField<std::string>(6) == "run4.dat" && ( name=="mu+" || name=="mu-" ) )
+           { 
+           // record three momentum
+             ThreeVector threeMomentum(f.getField<float>(3),f.getField<float>(4),f.getField<float>(5));
+           // find out particle id
+             int pdg=particle_info.getPDGCode(name);
+           // record event number
+             int event=f.getField<int>(1);
+           // create particle
+             Particle mu( pdg, particle_info.getMassGeV(pdg), threeMomentum );
+           // calculate invariant masses with other muons
+             iter=Muon.begin();
+             for(; iter != Muon.end(); ++iter)
+                { if ((*iter).second.GetPDGCode() != pdg)
+                    { FourVector Sum=((*iter).second.GetFourMomentum()+mu.GetFourMomentum());
+                    // The first entry in a pair is for mu+, second for mu-
+                      if (pdg>0) events=std::make_pair((*iter).first,event);
+                      else       events=std::make_pair(event,(*iter).first);
+                      masses=std::make_pair(Sum.GetLength(), events);
+                      vectorOfMasses.push_back(masses);
+                    }
+                }
+             Muon.insert(std::make_pair(event, mu));
+           }
+       // Check that input is o.k.
+         if (f.inputFailed()) break;
+       }
+
+// check what we recorded
+  std::cout<<"recorded events\n";
+  std::cout<<"___ pdg code ___ event ___ E ___ px ___ py ___ pz ___"<<std::endl;
+  iter=Muon.begin();
+  for(;iter != Muon.end();++iter)
+     { std::cout<<"    "<< (*iter).second.GetPDGCode() << "               " <<(*iter).first<<"   "<<(*iter).second.GetFourMomentum().GetT()<<"   "<<(*iter).second.GetFourMomentum().GetX()<<"   "<<(*iter).second.GetFourMomentum().GetY()<<"   "<<(*iter).second.GetFourMomentum().GetZ()<<std::endl;
+     }
+
+// sort masses
+  std::sort(vectorOfMasses.begin(), vectorOfMasses.end(), compareFunction);
+// output masses and event numbers
+  std::vector<std::pair<float, std::pair<int, int> > >::iterator kk=vectorOfMasses.begin();
+  std::cout<<"___ Invariant mass^2 GeV^2 ___ mu+ ___ mu- ___"<<std::endl;
+  for (; kk != vectorOfMasses.end(); ++kk){std::cout<<(*kk).first<<"     "<<(*kk).second.first<<"    "<<(*kk).second.second<<std::endl;}
+
+
+  std::cout<< "press any key to continue...\n";
+  std::cin.ignore();
+  std::cin.ignore();
+
+}
+
+else std::cout<<"File didn't open"<<std::endl;
 
 return 0;
 }
